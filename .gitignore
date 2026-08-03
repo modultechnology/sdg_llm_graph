@@ -1,0 +1,30 @@
+# ── Data, caches, and run outputs ────────────────────────────────────────────
+# These appear inside the release folder when you run the notebooks with the
+# default root. None of it belongs in git.
+sdg_data/
+sdggraph/
+aurora_sdg_graph_full/
+_cache/
+
+# ── Local overrides — never commit a real path ───────────────────────────────
+config.local.yaml
+.env
+
+# ── Large artefacts distributed via Zenodo, not git ──────────────────────────
+*.parquet
+*.zip
+artifacts/*.npy
+
+# Packaged predictions: keep only if small enough to commit (notebook 00b
+# tells you). If they go to a GitHub release asset instead, uncomment:
+# artifacts/predictions/    <- 0.5 MB total, committed; uncomment only if this grows
+
+# ── Verification copies with pinned local paths — never ship ─────────────────
+notebooks/*_VERIFY_*.ipynb
+
+# ── Notebook noise ───────────────────────────────────────────────────────────
+.ipynb_checkpoints/
+__pycache__/
+
+# NOTE: vendor/gemma4_patched.py IS committed. It is Apache-2.0 (derived from
+# vLLM's Gemma 4 implementation) and the paper undertakes to publish it.

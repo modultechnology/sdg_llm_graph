@@ -1,0 +1,19 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Data root. Everything else is derived from this — no other path is hardcoded
+# anywhere in the notebooks.
+#
+#   Local:  root: ./sdg_data          (relative to wherever you launch Jupyter)
+#           root: /data/sdg-llm-graph (absolute is fine too)
+#   Colab:  root: /content/drive/MyDrive/sdg-llm-graph
+#
+# You can also override this file entirely with:  export SDG_ROOT=/path/to/data
+# ─────────────────────────────────────────────────────────────────────────────
+root: ./sdg_data
+
+# Directory layout created under root (fixed — do not change these):
+#   sdggraph/                              matrix A, UN archive, series descriptions
+#   aurora_sdg_graph_full/
+#     data_cache/                          Aurora parquet, abstracts, SBERT cache
+#     shared_llm_cache_local/<model>/       raw LLM probabilities
+#     results_<VERSION>/                    per-run outputs
+#     cross_model_comparison_v5/            ablation + diagnostics output

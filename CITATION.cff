@@ -1,0 +1,28 @@
+cff-version: 1.2.0
+message: "If you use this software or the released SDG interaction matrix, please cite the paper below."
+title: "Neighbours and Graphs: LLM-Based SDG Classification of Research Abstracts"
+abstract: >-
+  Code, SDG-SDG interaction matrices, and raw LLM predictions for a controlled
+  comparison of label-graph propagation against per-document retrieval
+  post-corrections for multi-label SDG classification of research abstracts.
+authors:
+  - family-names: "Brașoveanu"
+    given-names: "Adrian M.P."
+    affiliation: "Modul University Vienna, Austria"
+  - family-names: "Weichselbraun"
+    given-names: "Albert"
+    affiliation: "University of Applied Sciences of the Grisons, Chur, Switzerland"
+  - family-names: "Nixon"
+    given-names: "Lyndon J.B."
+    affiliation: "Modul University Vienna / Modul Technology, Austria"
+  - family-names: "Scharl"
+    given-names: "Arno"
+    affiliation: "Modul University Vienna / webLyzard technology, Austria"
+license: Apache-2.0
+repository-code: "https://github.com/modultechnology/sdg_llm_graph"
+keywords:
+  - sustainable development goals
+  - multi-label text classification
+  - large language models
+  - label propagation
+  - retrieval-augmented classification

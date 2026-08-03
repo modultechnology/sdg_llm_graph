@@ -1,0 +1,15 @@
+sdg-llm-graph
+Copyright (c) 2026 the authors of "Neighbours and Graphs: LLM-Based SDG
+Classification of Research Abstracts"
+
+Licensed under the Apache License, Version 2.0.
+
+This distribution includes vendor/gemma4_patched.py, retrieved from the
+Hugging Face model repository bg-digitalservices/Gemma-4-26B-A4B-it-NVFP4
+(Mario Iseli). That file is derived from the Apache-2.0 licensed Gemma 4
+implementation in vLLM (https://github.com/vllm-project/vllm) and is
+redistributed here under the same licence.
+
+  retrieved : 2026-08-03
+  source    : https://huggingface.co/bg-digitalservices/Gemma-4-26B-A4B-it-NVFP4/resolve/main/gemma4_patched.py
+  sha256    : 26d4748c74de9e24a5600e19c53e671ff0d0e5d6143f29c8c54b679e4f455977

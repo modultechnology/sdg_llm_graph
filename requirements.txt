@@ -1,0 +1,22 @@
+# Pins taken from the install cells of the notebooks as actually run.
+# Post-correction analysis (notebook 03) needs only the CPU block.
+
+# --- CPU block: enough to re-run 01 and 03 -----------------------------------
+numpy==1.26.4
+pandas==2.2.2
+scipy>=1.11
+scikit-learn>=1.3
+sentence-transformers>=2.2
+statsmodels>=0.14
+matplotlib>=3.7
+seaborn>=0.12
+openpyxl>=3.1
+requests==2.32.4
+pyyaml>=6.0
+zenodo-get>=1.3
+
+# --- GPU block: only needed to regenerate raw LLM predictions (notebook 02) ---
+# vllm>=0.7            # see README for the exact version + NVFP4 constraints
+# openai>=1.30         # OpenAI-compatible client for the local vLLM server
+# numba<0.62.0         # pinned by vLLM's dependency chain
+# torch                # installed as a vLLM dependency
