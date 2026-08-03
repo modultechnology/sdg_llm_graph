@@ -15,7 +15,8 @@ beats the same baseline under label propagation.
 ### On Google Colab (how the paper's runs were done)
 
 Upload a notebook to Colab and press **Run All**. There is nothing to configure
-and no shell commands to type. The first path cell mounts your Drive and creates:
+and no shell commands to type. The first path cell mounts your Drive and creates
+this layout (the folder name is the default; override it with `SDG_ROOT` below):
 
 ```
 MyDrive/sdg-llm-graph/
@@ -75,7 +76,7 @@ can tell whether they got the same snapshot:
 
 | file | release | sha256 | downloaded |
 |---|---|---|---|
-| `SDG_UN_data.zip` | 2026.Q1.G.01 |  `cd8d139ee20f178290e856708f9d95855dd7b01c6365e2675fd5ce60fcf0d060` | _(fill in)_ |
+| `SDG_UN_data.zip` | 2026.Q1.G.01 | `cd8d139ee20f178290e856708f9d95855dd7b01c6365e2675fd5ce60fcf0d060` | 2026-08-03 |
 
 ## 3. Run order
 
@@ -188,38 +189,40 @@ redistributed here under the same licence with attribution in `NOTICE`.
 
 | file | sha256 | retrieved |
 |---|---|---|
-| `vendor/gemma4_patched.py` |  `26d4748c74de9e24a5600e19c53e671ff0d0e5d6143f29c8c54b679e4f455977` | _(printed by notebook 00)_ |
+| `vendor/gemma4_patched.py` | `26d4748c74de9e24a5600e19c53e671ff0d0e5d6143f29c8c54b679e4f455977` | 2026-08-03 |
 
 **Revision caveat.** The original runs fetched this file from the model
 repository's `main` branch at execution time and did not archive it, so the
 exact revision used then cannot be established. The vendored copy is what `main`
-served on the date recorded in `NOTICE`; the upstream repository has been
-updated since the runs. Anyone reproducing from scratch should pin a commit hash
-rather than `main`. NVIDIA later published an official
+served on the date recorded in `NOTICE`, which may differ from the revision used
+during the original runs. Anyone reproducing from scratch should pin a commit
+hash rather than `main`. NVIDIA later published an official
 `nvidia/Gemma-4-26B-A4B-NVFP4` checkpoint (2026-05-01), which avoids the patch
 entirely but is a different checkpoint and would give different numbers.
 
-## 6. Before you publish
+## 6. Repository hygiene
+
+Contributors and anyone preparing an updated release should run:
 
 ```bash
-./scripts/check_no_private_paths.sh
+bash scripts/check_no_private_paths.sh
 ```
 
-Fails on private paths and secrets; warns on stray emails and on notebooks that
-still carry executed outputs; notes any `*_VERIFY_*` notebook still present.
-Those are gitignored working copies with a hardcoded local data root and must
-never be committed.
+It fails on private paths and credentials, warns on stray email addresses and on
+notebooks carrying executed outputs, and flags any `*_VERIFY_*` notebook. Those
+are local working copies with a hardcoded data root; they are gitignored and are
+not part of the release.
 
 `.gitignore` also excludes `sdg_data/`, `sdggraph/` and `aurora_sdg_graph_full/`,
-which appear inside this folder once the notebooks run and contain the UN
-archive and the caches. Check `git status` before the first commit.
+which appear inside a working copy once the notebooks run and hold the UN archive
+and the caches. Check `git status` before committing.
 
-Still to fill in by hand:
-
-- `https://github.com/modultechnology/sdg_llm_graph` in this file and in `CITATION.cff`
-- Aurora **versioned** Zenodo DOI (not the concept DOI)
-- OpenAlex snapshot date for the abstract fetch
-- `SDG_UN_data.zip` sha256 in the §2 table, and the patch sha256 in §5
+**Known gaps.** Two provenance details are not yet pinned: the versioned Zenodo
+DOI of the exact Aurora release used (only the project DOI is cited in the
+paper), and the date range over which the OpenAlex abstracts were fetched. Both
+affect anyone regenerating the inputs from scratch; neither affects reproducing
+the published tables from the committed predictions, which is the path described
+in section 4b.
 
 ## 7. Citing
 
