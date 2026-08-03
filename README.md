@@ -69,6 +69,21 @@ always: `$SDG_ROOT` → `config.yaml` → Drive (Colab) → `./sdg_data`.
 The Aurora label set and OpenAlex abstracts are fetched automatically, and
 `00_release_assets.ipynb` fetches `vendor/gemma4_patched.py` for you.
 
+**Aurora label set.** The pipeline notebooks download
+`10.5281/zenodo.5224005` — "DOI's with SDG labels on Target level | 1.4M
+research articles (2009-2020)", version 1.1. That is the *versioned* DOI, so
+re-runs get the same deposit; the concept DOI `10.5281/zenodo.5205672` always
+resolves to the latest version and is deliberately not used here. Note this is a
+different deposit from the Aurora search queries (`10.5281/zenodo.4883250`),
+which this work does not use.
+
+**OpenAlex abstracts.** Abstracts are reconstructed from the OpenAlex inverted
+index at fetch time. The cache behind the published results was built on
+**2026-05-05**. OpenAlex is versionless, so a later fetch may return a revised
+abstract for some DOIs; the test-split DOI list is pinned by the SHA-1
+fingerprint `4c5581303537`, so the *set* of papers is reproducible even when the
+text is not byte-identical.
+
 **UN archive provenance.** The matrix shipped in `artifacts/` was built from
 release `2026.Q1.G.01` of the UN Global SDG Indicators Database. Record the
 `sha256` of your own copy in this table when you download it, so future re-runs
@@ -217,12 +232,13 @@ not part of the release.
 which appear inside a working copy once the notebooks run and hold the UN archive
 and the caches. Check `git status` before committing.
 
-**Known gaps.** Two provenance details are not yet pinned: the versioned Zenodo
-DOI of the exact Aurora release used (only the project DOI is cited in the
-paper), and the date range over which the OpenAlex abstracts were fetched. Both
-affect anyone regenerating the inputs from scratch; neither affects reproducing
-the published tables from the committed predictions, which is the path described
-in section 4b.
+**Provenance status.** Every input is pinned: the UN archive by release tag and
+sha256 (section 2), the Aurora label set by versioned Zenodo DOI (section 2), the
+OpenAlex fetch by date (section 2), the vLLM patch by sha256 (section 5), and the
+evaluation split by SHA-1 fingerprint. The one thing outside our control is
+OpenAlex itself, which is versionless: a re-fetch may return revised abstracts
+for some DOIs. That affects regeneration from scratch only — reproducing the
+published tables from the committed predictions (section 4b) is unaffected.
 
 ## 7. Citing
 
