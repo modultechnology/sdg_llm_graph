@@ -1,4 +1,4 @@
-# Neighbours and Graphs: LLM-Based SDG Classification of Research Abstracts
+# Comparing Neighbour Retrieval and Interlinkage Graphs for Sustainable Development Goal Classification with LLMs
 
 Code and artefacts for the paper. Everything is driven by notebooks; there is no
 package to install beyond `requirements.txt`.
