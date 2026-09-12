@@ -1,0 +1,5 @@
+model,K_neighbours,lambda_neighbours,lambda_entities,lambda_prior,val_f1,test_f1
+gemma4-26b,50,0.7000000000000001,0.1,0.2,0.6674,0.6099
+mistral-24b,50,0.7000000000000001,0.1,0.2,0.6599,0.5804
+qwen3-32b,50,0.7000000000000001,0.1,0.2,0.6623,0.5919
+mixtral-8x7b,50,1.0,0.0,0.0,0.64,0.5782

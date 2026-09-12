@@ -1,0 +1,10 @@
+graph,gemma4-26b,mistral-24b,mixtral-8x7b,qwen3-32b
+"Combined 169x169 (w·B + (1-w)·C, w on val)",0.522,0.4585,0.18,0.4039
+Keyword overlap 169x169 (lexical-symbolic),0.5159,0.457,0.1876,0.4018
+Pradhan 17x17 (goal-level baseline),0.5185,0.4658,0.2339,0.4133
+Pradhan inherited 169x169,0.5217,0.4585,0.1804,0.4024
+Random Gaussian baseline 169x169 (sanity floor),0.5255,0.4575,0.176,0.4025
+Semantic similarity 169x169 (SBERT),0.5265,0.4568,0.18,0.4039
+UN taxonomic 169x169 (5P clusters),0.5255,0.4558,0.1802,0.4025
+goal-LLM (no graph),0.5216,0.4787,0.2199,0.4241
+target-LLM aggregated (no graph),0.5286,0.459,0.1828,0.4024
