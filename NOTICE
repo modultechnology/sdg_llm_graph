@@ -13,3 +13,10 @@ redistributed here under the same licence.
   retrieved : 2026-08-03
   source    : https://huggingface.co/bg-digitalservices/Gemma-4-26B-A4B-it-NVFP4/resolve/main/gemma4_patched.py
   sha256    : 26d4748c74de9e24a5600e19c53e671ff0d0e5d6143f29c8c54b679e4f455977
+
+This distribution also includes an OpenAlex abstract cache under
+artifacts/data_cache/*.parquet, reconstructed from the OpenAlex inverted index.
+OpenAlex places its data in the public domain under CC0.
+
+  retrieved : 2026-05-05
+  source    : https://openalex.org
