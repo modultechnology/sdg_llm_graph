@@ -81,8 +81,15 @@ which this work does not use.
 index at fetch time. The cache behind the published results was built on
 **2026-05-05**. OpenAlex is versionless, so a later fetch may return a revised
 abstract for some DOIs; the test-split DOI list is pinned by the SHA-1
-fingerprint `4c5581303537`, so the *set* of papers is reproducible even when the
-text is not byte-identical.
+fingerprints below, so the *set* of papers is reproducible even when the text is
+not byte-identical. The cache itself is committed under `artifacts/data_cache/`,
+so the published numbers reproduce without any re-fetch.
+
+| split | n | SHA-1 fingerprint of the ordered DOI list |
+|---|---|---|
+| test | 10,000 | `4c5581303537` |
+| validation | 200 | `b212c22b4951` |
+| neighbour pool | 3,054 | `c8ffa1517ecc` |
 
 **UN archive provenance.** The matrix shipped in `artifacts/` was built from
 release `2026.Q1.G.01` of the UN Global SDG Indicators Database. Record the
@@ -100,7 +107,7 @@ can tell whether they got the same snapshot:
 | 0 | `00_release_assets.ipynb` | CPU | seconds | Fetches the vLLM patch, writes `NOTICE`, checksums inputs. Run once. |
 | 1 | `01_matrix_preprocessor.ipynb` | CPU | ~5 min | Matrix A, Figure 2 |
 | 2 | `02_pipeline_<backbone>.ipynb` | Blackwell GPU | ~3 GPU-h each | Stage 1+2 LLM probabilities, matrices A–G, Table 3, baselines B1–B4 |
-| 3 | `03_compare_ablate.ipynb` | CPU | minutes | Tables 4–7, K×λ ablation, McNemar, the three diagnostics |
+| 3 | `03_compare_ablate.ipynb` | CPU | minutes | Tables 3–6, K×λ ablation, McNemar, the three diagnostics, split export |
 
 Notebook 2 exists in four copies, one per backbone (`gemma`, `mistral`, `qwen`,
 `mixtral`). They are near-identical — the model is chosen by `ACTIVE_MODEL` from
@@ -171,13 +178,19 @@ git clone https://github.com/modultechnology/sdg_llm_graph && cd sdg_llm_graph
 pip install -r requirements.txt
 export SDG_ROOT=$(pwd)/sdg_data
 mkdir -p sdg_data/aurora_sdg_graph_full
-cp -r artifacts/predictions sdg_data/aurora_sdg_graph_full/
+cp -r artifacts/predictions artifacts/data_cache artifacts/splits \
+      sdg_data/aurora_sdg_graph_full/
 jupyter lab notebooks/03_compare_ablate.ipynb
 ```
 
 `03_compare_ablate.ipynb` reads the committed `.npz` predictions and recomputes
 the per-document methods, the K x lambda ablation, the McNemar tests, and the
 three diagnostics of section 7.5. Runs on a laptop in minutes.
+
+The three cells at the end of that notebook — split export, corpus prevalence,
+and the per-goal breakdown — additionally read
+`data_cache/abstracts_full.parquet` and `data_cache/aurora_multilabel_full.parquet`,
+both copied by the command above.
 
 Notebooks `01` and `02` are only needed to regenerate the inputs from scratch:
 `01` rebuilds matrix A from the UN archive, `02` re-runs the LLM stages on a
@@ -242,6 +255,9 @@ published tables from the committed predictions (section 4b) is unaffected.
 
 ## 7. Citing
 
+Archived release: https://doi.org/10.5281/zenodo.XXXXXXX
+
 See `CITATION.cff`. Licence: Apache-2.0 — full text in `LICENSE`, attribution for
-the vendored vLLM patch in `NOTICE`. The Aurora label set, OpenAlex metadata, and
-the UN Indicators Database carry their own terms.
+the vendored vLLM patch and the OpenAlex abstract cache in `NOTICE`. The Aurora
+label set, OpenAlex metadata, and the UN Indicators Database carry their own
+terms.
