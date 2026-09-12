@@ -1,0 +1,36 @@
+{
+  "seed": 42,
+  "openalex_fetched": "2026-05-05",
+  "aurora_label_doi": "10.5281/zenodo.5224005",
+  "stratum": "2-5 positive goals",
+  "splits": [
+    {
+      "split": "fewshot",
+      "n": 40,
+      "fingerprint": "8d44d6889506",
+      "n_goal_cols": 17,
+      "n_target_cols": 169
+    },
+    {
+      "split": "val",
+      "n": 200,
+      "fingerprint": "b212c22b4951",
+      "n_goal_cols": 17,
+      "n_target_cols": 169
+    },
+    {
+      "split": "test",
+      "n": 10000,
+      "fingerprint": "4c5581303537",
+      "n_goal_cols": 17,
+      "n_target_cols": 169
+    },
+    {
+      "split": "pool",
+      "n": 3054,
+      "fingerprint": "c8ffa1517ecc",
+      "n_goal_cols": 17,
+      "n_target_cols": 169
+    }
+  ]
+}
