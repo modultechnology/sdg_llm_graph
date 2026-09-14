@@ -118,11 +118,25 @@ merged so that each file is what actually ran.
 Notebook 3 reads the cached probabilities written by notebook 2, so once the
 caches exist it re-runs on a CPU-only Colab runtime (or a laptop) in minutes.
 
-## 4. Reproducibility, honestly
+The last two cells of notebook 3, `CELL_UNIFY` and `CELL_REGENERATE_FINAL`,
+produce every figure reported in the paper under a single evaluation routine.
+They must run in that order and in the same session: the first defines the
+matrices, the propagation operator and the thresholding routine, and the second
+reuses them. Output goes to `artifacts/results/cross_model_comparison_v[versionnumber]/`.
+
+## 4. Reproducibility
 
 **Tier A — post-correction replay (CPU, minutes, exact).** Given the cached raw
-LLM probabilities, notebook 3 reproduces Tables 4–7 deterministically with
-`SEED=42` under NumPy 1.26.
+LLM probabilities, notebook 3 reproduces the reported tables deterministically
+with `SEED=42` under NumPy 1.26.
+
+**One evaluation routine.** Every reported figure uses per-class decision
+thresholds selected on the validation split over {0.10, 0.15, ..., 0.85} and
+applied unchanged to the test split. Paired differences in macro-F1 are
+reported with percentile intervals from 1,000 document-level bootstrap
+resamples, drawn over papers. Earlier releases scored the graph table and the
+per-document tables with two separate thresholding implementations; that is no
+longer the case.
 
 **Tier B — full LLM re-run (GPU, ~3 h per backbone, approximate).** vLLM's CUDA
 reductions are not bit-deterministic even at `temperature=0`; parse differences
@@ -157,8 +171,9 @@ path refactor, `01_matrix_preprocessor.ipynb` rebuilt matrix A from the same UN
 archive and reproduced `artifacts/sdg_interaction_matrix_v3_2.json` **exactly**
 (max absolute difference 0.0 across all 289 cells; indicator-pair coverage
 counts identical). `03_compare_ablate.ipynb`, run against the cached LLM
-predictions, reproduced every value of Tables 4 and 6 to four decimal places —
-twelve comparisons across four backbones, largest deviation 0.0000. The
+predictions, reproduced every published goal-level graph result exactly under
+the unified routine — matrices A–G and both LLM-only baselines on the primary
+backbone, to four decimal places. The
 `02_pipeline_*` notebooks were not re-executed; they share the same edit set,
 recorded cell by cell in `SANITISATION_DIFF.md`, and no hyperparameter, prompt,
 matrix construction, propagation rule, or parsing rule was modified in any
@@ -184,11 +199,18 @@ jupyter lab notebooks/03_compare_ablate.ipynb
 ```
 
 `03_compare_ablate.ipynb` reads the committed `.npz` predictions and recomputes
-the per-document methods, the K x lambda ablation, the McNemar tests, and the
-three diagnostics of section 7.5. Runs on a laptop in minutes.
+the per-document methods, the K x lambda ablation, the significance tests, and
+the three diagnostics of section 7.5. Runs on a laptop in minutes.
 
-The three cells at the end of that notebook — split export, corpus prevalence,
-and the per-goal breakdown — additionally read
+Running the notebook top to bottom and then its final two cells, `CELL_UNIFY`
+and `CELL_REGENERATE_FINAL`, regenerates the full set of reported figures into
+`artifacts/results/cross_model_comparison_v6/`: the graph table, the
+target-level results, the per-goal breakdowns, the K x lambda ablation, the
+entity and fusion scores, the retrieval-only baseline, the twenty-seed Gaussian
+control, the bootstrap intervals, the diagnostics, and the Aurora
+co-occurrence graph. No GPU and no LLM calls.
+
+The split-export, corpus-prevalence and per-goal cells additionally read
 `data_cache/abstracts_full.parquet` and `data_cache/aurora_multilabel_full.parquet`,
 both copied by the command above.
 
@@ -255,7 +277,11 @@ published tables from the committed predictions (section 4b) is unaffected.
 
 ## 7. Citing
 
-Archived release: https://doi.org/10.5281/zenodo.XXXXXXX
+Archived releases: https://doi.org/10.5281/zenodo.22726654
+
+That DOI represents all versions and resolves to the latest. Each release also
+has its own version DOI; the version behind the published results is cited in
+the paper.
 
 See `CITATION.cff`. Licence: Apache-2.0 — full text in `LICENSE`, attribution for
 the vendored vLLM patch and the OpenAlex abstract cache in `NOTICE`. The Aurora
