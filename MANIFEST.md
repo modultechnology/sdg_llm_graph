@@ -37,7 +37,7 @@ notebook 02 from A and C.
 | `artifacts/data_cache/` | done — abstract cache, matrices C and F, target descriptors, entity caches |
 | Aurora versioned DOI, OpenAlex snapshot date, UN archive sha256 | done — recorded in README §2 |
 | `repository-code` in `CITATION.cff` | done |
-| Zenodo DOI in README §7 and in the paper | done — 10.5281/zenodo.22726655 |
+| Zenodo DOI in README §7 and in the paper | done — README cites the concept DOI 10.5281/zenodo.22726654; the paper cites the version DOI of the release behind its numbers |
 
 ## Not shipped, by design
 
