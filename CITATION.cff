@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 message: "If you use this software or the released SDG interaction matrix, please cite the paper below."
-title: "Comparing Neighbour Retrieval and Interlinkage Graphs for Sustainable Development Goal Classification with LLMs"
+title: "Comparing Neighbour Retrieval and Interlinkage Graphs for Sustainable Development Goal Classification with Large Language Models"
 abstract: >-
   Code, SDG-SDG interaction matrices, evaluation splits, and raw LLM predictions
   for a controlled comparison of label-graph propagation against per-document
@@ -9,7 +9,7 @@ abstract: >-
 authors:
   - family-names: "Brașoveanu"
     given-names: "Adrian M.P."
-    affiliation: "Modul University Vienna, Austria"
+    affiliation: "Modul University / Storypact GmbH, Vienna, Austria"
     orcid: "https://orcid.org/0000-0002-3439-4736"
   - family-names: "Weichselbraun"
     given-names: "Albert"
@@ -17,11 +17,11 @@ authors:
     orcid: "https://orcid.org/0000-0001-6399-045X"
   - family-names: "Nixon"
     given-names: "Lyndon J.B."
-    affiliation: "Modul University Vienna / Modul Technology, Austria"
+    affiliation: "Modul Technology, Austria"
     orcid: "https://orcid.org/0000-0001-7091-4543"
   - family-names: "Scharl"
     given-names: "Arno"
-    affiliation: "Modul University Vienna / webLyzard technology, Austria"
+    affiliation: "Modul University / webLyzard technology, Vienna, Austria"
     orcid: "https://orcid.org/0000-0001-5346-9521"
 license: Apache-2.0
 repository-code: "https://github.com/modultechnology/sdg_llm_graph"

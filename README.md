@@ -1,4 +1,4 @@
-# Comparing Neighbour Retrieval and Interlinkage Graphs for Sustainable Development Goal Classification with LLMs
+# Comparing Neighbour Retrieval and Interlinkage Graphs for Sustainable Development Goal Classification with Large Language Models
 
 Code and artefacts for the paper. Everything is driven by notebooks; there is no
 package to install beyond `requirements.txt`.
