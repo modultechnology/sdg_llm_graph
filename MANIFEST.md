@@ -7,19 +7,26 @@
 | `notebooks/01_matrix_preprocessor.ipynb` | Matrix A from UN indicators; Figure 2 |
 | `notebooks/02_pipeline_{gemma,mistral,qwen,mixtral}.ipynb` | LLM stages, matrices A–G, Table 3, baselines B1–B4, doc methods |
 | `notebooks/03_compare_ablate.ipynb` | Tables 3–6, ablations, McNemar, diagnostics 1–3, Aurora co-occurrence matrix, split export |
+| `notebooks/04_revision_analyses.ipynb` | Revision analyses (round 3): LLM increment over retrieval-only, retrieval controls, pool-size curve, strata, supervised pool baselines |
+| `notebooks/05_query_ablation.ipynb` | Query-vocabulary ablation (round 3, R1.4): label-learning methods rerun with Aurora's query terms removed, against a random-word control |
+| `artifacts/aurora_queries_v5/` | Aurora SDG search queries v5.0 (17 XML files, CC BY 4.0, commit 9acd03d), used by notebook 05 |
 | `artifacts/sdg_interaction_matrix_v3_2.json` | Released goal-level matrix A (+ per-country matrices, coverage counts) |
 | `artifacts/un_sdg_series_descriptions.json` | 713 UN series descriptions, release 2026.Q1.G.01 |
 | `artifacts/sdg_interaction_matrix_v3_2.png` | Figure 2 as rendered |
 | `artifacts/sdg_direction_uncertain_for_review.csv` | The 216 UN series excluded as direction-unclassifiable |
 | `artifacts/predictions/*.npz` | Raw LLM predictions, all four backbones (16 arrays, 0.5 MB) |
 | `artifacts/splits/*` | Evaluation splits: ordered DOI lists, manifests with per-abstract SHA-256, goal and target labels |
-| `artifacts/results/cross_model_comparison_v5/*.csv` | Every table and diagnostic in the paper, as written by notebook 03 |
+| `artifacts/results/cross_model_comparison_v5/*.csv` | Earlier per-document and diagnostic outputs of notebook 03 (pre-unification) |
+| `artifacts/results/cross_model_comparison_v6/*.csv` | Every table and diagnostic in the paper, under the single evaluation routine (notebook 03, `CELL_UNIFY` + `CELL_REGENERATE_FINAL`) |
+| `artifacts/results/cross_model_comparison_v7/*.csv` | Revision analyses, written by notebook 04 |
+| `artifacts/results/cross_model_query_ablation/*.csv` | Query-vocabulary ablation, written by notebook 05 |
 | `artifacts/data_cache/*.parquet` | OpenAlex abstract cache as fetched 2026-05-05, so the results reproduce without a re-fetch |
 | `artifacts/data_cache/sbert_target_matrix_169.npy` | Matrix C (SBERT cosine on target descriptors, median-centred) |
 | `artifacts/data_cache/keyword_matrix_169_methods_v2_0.0.npy` | Matrix F (Jaccard on stopword-filtered content tokens) |
 | `artifacts/data_cache/target_descriptors_169.json` | The 169 UN target descriptions from which C and F are built |
 | `artifacts/data_cache/entities_*.json` | Cached LLM entity extractions for the doc_entities stream |
 | `config.yaml`, `requirements.txt`, `scripts/check_no_private_paths.sh` | Setup and release gate |
+| `CHANGELOG.md` | What changed between releases |
 | `LICENSE`, `NOTICE` | Apache-2.0 full text; attribution for the vendored vLLM patch and the OpenAlex cache |
 
 Matrices B, D, E and G are not shipped as files: B inherits A by goal, D is a

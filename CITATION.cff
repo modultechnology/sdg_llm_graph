@@ -25,8 +25,8 @@ authors:
     orcid: "https://orcid.org/0000-0001-5346-9521"
 license: Apache-2.0
 repository-code: "https://github.com/modultechnology/sdg_llm_graph"
-version: "1.0.0"
-date-released: "2026-09-12"
+version: "1.1.0"
+date-released: "2026-11-13"
 keywords:
   - sustainable development goals
   - multi-label text classification

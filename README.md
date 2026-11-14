@@ -4,9 +4,12 @@ Code and artefacts for the paper. Everything is driven by notebooks; there is no
 package to install beyond `requirements.txt`.
 
 The headline result: on a 10 000-paper Aurora test set, an SBERT K-nearest-neighbour
-post-correction lifts goal-level macro-F1 from 0.5359 (target-LLM aggregated) to
-0.6088 on the Gemma 4 backbone, while none of seven SDG–SDG interaction matrices
-beats the same baseline under label propagation.
+post-correction lifts goal-level macro-F1 from 0.5286 (target-LLM aggregated) to
+0.6116 on the Gemma 4 backbone, while none of seven SDG–SDG interaction matrices
+beats the same baseline under label propagation. The neighbour vote on its own,
+with no LLM input, reaches 0.5821; `04_revision_analyses.ipynb` quantifies what
+the LLM adds on top of it. All figures are from
+`artifacts/results/cross_model_comparison_v6/`.
 
 ---
 
@@ -108,6 +111,7 @@ can tell whether they got the same snapshot:
 | 1 | `01_matrix_preprocessor.ipynb` | CPU | ~5 min | Matrix A, Figure 2 |
 | 2 | `02_pipeline_<backbone>.ipynb` | Blackwell GPU | ~3 GPU-h each | Stage 1+2 LLM probabilities, matrices A–G, Table 3, baselines B1–B4 |
 | 3 | `03_compare_ablate.ipynb` | CPU | minutes | Tables 3–6, K×λ ablation, McNemar, the three diagnostics, split export |
+| 4 | `04_revision_analyses.ipynb` | CPU | ~10 min | Revision analyses: LLM increment over retrieval-only, retrieval controls, pool-size curve, strata, supervised pool baselines (section 4c) |
 
 Notebook 2 exists in four copies, one per backbone (`gemma`, `mistral`, `qwen`,
 `mixtral`). They are near-identical — the model is chosen by `ACTIVE_MODEL` from
@@ -214,6 +218,64 @@ The split-export, corpus-prevalence and per-goal cells additionally read
 `data_cache/abstracts_full.parquet` and `data_cache/aurora_multilabel_full.parquet`,
 both copied by the command above.
 
+## 4c. Revision analyses (notebook 04)
+
+`04_revision_analyses.ipynb` answers the third review round. CPU only, no LLM
+calls, nothing re-run. It reads the files notebooks 02 and 03 already left on the
+data root — the cached LLM probabilities in `aurora_sdg_graph_full/results_v5_multi_*`
+and the abstract caches in `aurora_sdg_graph_full/data_cache/` — and writes only to
+a new folder, `aurora_sdg_graph_full/cross_model_comparison_v7/`.
+
+* **On Colab**, open it and **Run All**. The root is resolved as in the other
+  notebooks; if the run data is not under the default `MyDrive/sdg-llm-graph`,
+  the notebook searches your Drive for a folder that holds
+  `aurora_sdg_graph_full/data_cache/abstracts_full.parquet`, prints it and uses
+  it. If it finds several, it lists them and asks you to set `SDG_ROOT`.
+* **Locally**, run it from `notebooks/`; with no run data it falls back to the
+  released `../artifacts` (predictions `.npz`, abstract caches).
+
+The repository's `artifacts/` folder is optional. Every split is checked against
+its published fingerprint whichever source is used.
+
+The first run encodes the val, test and pool texts with SBERT once
+(`all-MiniLM-L6-v2`, a few minutes on CPU) and caches them in `data_cache/`,
+keyed by the split fingerprints. A copy in `artifacts/data_cache/` is also
+picked up.
+
+Before reporting anything, a **reproduction gate** recomputes B1, B2,
+doc_neighbours, λ, retrieval-only and one bootstrap mean for all four backbones
+and compares them with the paper's v6 values (built into the notebook) to 1e-6.
+It stops on a mismatch. If only the embedding-dependent rows differ, the SBERT
+encoding is not bit-identical to the original run (library versions); set
+`SDG_STRICT_GATE=0` to continue, and the new analyses remain internally
+consistent.
+
+| Part | Output in `cross_model_comparison_v7/` |
+|---|---|
+| Reproduction gate | `repro_gate.csv` |
+| A1 LLM increment over retrieval-only (bootstrap CI, McNemar, per goal) | `llm_increment.csv`, `llm_increment_per_goal.csv` |
+| A2 Retrieval controls: shuffled pool labels, random neighbours, similarity rank bands | `retrieval_controls.csv`, `retrieval_controls_seeds.csv` |
+| A3 Labelled-pool size curve (50 … 3,054 papers, 10 seeds) | `pool_size_curve.csv`, `pool_size_curve_seeds.csv` |
+| A4 LLM increment by stratum (title-only, neighbour reliability, LLM uncertainty) | `llm_increment_strata.csv` |
+| B1 TF-IDF / SBERT logistic regression trained on the pool labels, alone and mixed with the LLM | `supervised_pool_baselines.csv` |
+
+## 4d. Query-vocabulary ablation (notebook 05)
+
+`05_query_ablation.ipynb` tests whether the label-learning methods win by
+recovering Aurora's query vocabulary (reviewer point R1.4). It is modelled on
+notebook `04` and reuses its data loading and methods unchanged. Every term quoted
+in Aurora's version-5.0 queries (`artifacts/aurora_queries_v5/`, CC BY 4.0, 1,034
+unique terms) is removed from the pool, validation and test texts, and
+retrieval-only, the neighbour correction (all four backbones) and the TF-IDF and
+SBERT classifiers are rerun on the masked texts. A control removes the same
+number of non-query words from each text at random (3 seeds). The LLM predictions
+are not re-run, so the LLM-only baselines are unchanged. CPU is enough.
+
+All output goes to a new folder per run,
+`aurora_sdg_graph_full/cross_model_query_ablation/run_<date>_<time>/`
+(`query_ablation.csv`, `query_ablation_summary.csv`, `query_ablation_masking.csv`);
+existing files are only read, and the last cell verifies that none changed.
+
 Notebooks `01` and `02` are only needed to regenerate the inputs from scratch:
 `01` rebuilds matrix A from the UN archive, `02` re-runs the LLM stages on a
 Blackwell GPU. Neither is required to check the published numbers.
@@ -258,7 +320,9 @@ Contributors and anyone preparing an updated release should run:
 bash scripts/check_no_private_paths.sh
 ```
 
-It fails on private paths and credentials, warns on stray email addresses and on
+It fails on credentials and on hard-coded paths in code and config (anything
+below a Drive folder, a Drive folder other than the generic `sdg-llm-graph`
+default, user home directories, `/tmp`), warns on stray email addresses and on
 notebooks carrying executed outputs, and flags any `*_VERIFY_*` notebook. Those
 are local working copies with a hardcoded data root; they are gitignored and are
 not part of the release.
